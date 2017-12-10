@@ -1,33 +1,10 @@
 import React from 'react';
 import SearchForm from './SearchForm.js';
-import SearchResultContainer from './SearchResultContainer.js';
+import SearchResult from './SearchResult.js';
 
 class SearchPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            errorState: 0,
-            inputText: '',
-            locationMode: false,
-            pendingState: false,
-        };
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleGoClick = this.handleGoClick.bind(this);
-        this.handleLocationClick = this.handleLocationClick.bind(this);
-    }
-
-    handleInputChange(e) {
-        this.setState({
-            inputText: e.target.value
-        });
-    }
-
-    handleGoClick() {
-        console.log(111111111)
-    }
-
-    handleLocationClick() {
-        console.log(222222222)
     }
 
     render() {
@@ -35,16 +12,19 @@ class SearchPage extends React.Component {
             <div>
                 <h1>Property Cross</h1>
                 <a href="/favor">favor</a>
-                <div>spinner{this.state.inputText}</div>
+                <div>spinner</div>
                 <p>Use the form below to search for houses to buy. You can search by place-name, postcode, or click 'My location', to search in your current location!</p>
                 <SearchForm
-                    handleLocationClick={this.handleLocationClick}
-                    handleInputChange={this.handleInputChange}
-                    handleGoClick={this.handleGoClick}
-                    inputText={this.state.inputText}
+                    handleLocationClick={this.props.handleLocationClick}
+                    handleInputChange={this.props.handleInputChange}
+                    handleGoClick={this.props.handleGoClick}
+                    inputText={this.props.inputText}
                 />
-                <SearchResultContainer
-                    inputText={this.state.inputText}
+                <SearchResult
+                    inputText={this.props.inputText}
+                    isAmbiguous={this.props.isAmbiguous}
+                    list={this.props.list}
+                    isLocationMode={this.props.isLocationMode}
                 />
             </div>
         );

@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import SearchPage from './components/SearchPage.js';
+import SearchPageContainer from './components/SearchPageContainer.js';
 
 ReactDOM.render(
-		<SearchPage />,
+		<SearchPageContainer />,
 		document.getElementById('root')
 );

@@ -11,11 +11,11 @@ class SearchForm extends React.Component {
     }
 
     render(){
-        return <div>
+        return <form>
             <input ref={elem => { this.textInput = elem; }} type="text" value={this.props.inputText} onChange={this.props.handleInputChange}/>
-            <button onClick={this.props.handleGoClick}>Go</button>
+            <button type="submit" onClick={this.props.handleGoClick}>Go</button>
             <MyLocation handleLocationClick={this.props.handleLocationClick} />
-        </div>;
+        </form>;
     }
 }
 

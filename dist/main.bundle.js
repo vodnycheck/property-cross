@@ -943,12 +943,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_SearchPage_js__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_SearchPageContainer_js__ = __webpack_require__(27);
 
 
 
 
-__WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__components_SearchPage_js__["a" /* default */], null), document.getElementById('root'));
+__WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__components_SearchPageContainer_js__["a" /* default */], null), document.getElementById('root'));
 
 /***/ }),
 /* 15 */
@@ -18265,24 +18265,28 @@ module.exports = camelize;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SearchForm_js__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__SearchResultContainer_js__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SearchPage_js__ = __webpack_require__(28);
 
 
 
-
-class SearchPage extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+class SearchPageContainer extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     constructor(props) {
         super(props);
         this.state = {
-            errorState: 0,
+            isAmbiguous: false,
+            list: [],
+            errorState: 0, //1 — no properties
             inputText: '',
-            locationMode: false,
+            isLocationMode: false,
             pendingState: false
         };
+
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleGoClick = this.handleGoClick.bind(this);
         this.handleLocationClick = this.handleLocationClick.bind(this);
+    }
+    ajaxSend() {
+        console.log(3333333333333);
     }
 
     handleInputChange(e) {
@@ -18291,12 +18295,87 @@ class SearchPage extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
         });
     }
 
-    handleGoClick() {
-        console.log(111111111);
+    handleGoClick(e) {
+        e.preventDefault();
+        const originBody = '?country=uk&pretty=1&action=search_listings&encoding=json&listing_type=buy&page=1&place_name=';
+        fetch('https://api.nestoria.co.uk/api' + originBody + this.state.inputText, {
+            method: 'GET',
+            cache: 'default',
+            mode: 'cors'
+        }).then(response => {
+            let code = response.status;
+            if (code == 100 || code == 101 || code == 110) {
+                this.setState({
+                    isLocationMode: false
+                });
+                return response.json();
+            }
+            if (code == 200 || code == 202) {
+                this.setState({
+                    isLocationMode: true
+                });
+                return response.json();
+            }
+        }).then(data => {
+            if (this.state.isLocationMode) {
+                this.setState({
+                    list: data.response.locations
+                });
+                if (data.response.locations.length === 0) {
+                    this.setState({
+                        errorState: 1
+                    });
+                } else {
+                    this.setState({
+                        errorState: 0
+                    });
+                }
+            } else {
+                this.setState({
+                    list: data.response.listings,
+                    errorState: 0
+                });
+            }
+        }).catch();
     }
 
     handleLocationClick() {
         console.log(222222222);
+    }
+
+    render() {
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__SearchPage_js__["a" /* default */], {
+            isAmbiguous: this.state.isAmbiguous,
+            list: this.state.list,
+            errorState: this.state.errorState,
+            inputText: this.state.inputText,
+            isLocationMode: this.state.isLocationMode,
+            pendingState: this.state.pendingState,
+            handleInputChange: this.handleInputChange,
+            handleGoClick: this.handleGoClick,
+            handleLocationClick: this.handleLocationClick
+        });
+    }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (SearchPageContainer);
+
+/***/ }),
+/* 28 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SearchForm_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__SearchResult_js__ = __webpack_require__(31);
+
+
+
+
+class SearchPage extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+    constructor(props) {
+        super(props);
     }
 
     render() {
@@ -18316,8 +18395,7 @@ class SearchPage extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
-                'spinner',
-                this.state.inputText
+                'spinner'
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'p',
@@ -18325,13 +18403,16 @@ class SearchPage extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
                 'Use the form below to search for houses to buy. You can search by place-name, postcode, or click \'My location\', to search in your current location!'
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__SearchForm_js__["a" /* default */], {
-                handleLocationClick: this.handleLocationClick,
-                handleInputChange: this.handleInputChange,
-                handleGoClick: this.handleGoClick,
-                inputText: this.state.inputText
+                handleLocationClick: this.props.handleLocationClick,
+                handleInputChange: this.props.handleInputChange,
+                handleGoClick: this.props.handleGoClick,
+                inputText: this.props.inputText
             }),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__SearchResultContainer_js__["a" /* default */], {
-                inputText: this.state.inputText
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__SearchResult_js__["a" /* default */], {
+                inputText: this.props.inputText,
+                isAmbiguous: this.props.isAmbiguous,
+                list: this.props.list,
+                isLocationMode: this.props.isLocationMode
             })
         );
     }
@@ -18340,13 +18421,13 @@ class SearchPage extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
 /* harmony default export */ __webpack_exports__["a"] = (SearchPage);
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MyLocation_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MyLocation_js__ = __webpack_require__(30);
 
 
 
@@ -18361,14 +18442,14 @@ class SearchForm extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
 
     render() {
         return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'div',
+            'form',
             null,
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { ref: elem => {
                     this.textInput = elem;
                 }, type: 'text', value: this.props.inputText, onChange: this.props.handleInputChange }),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'button',
-                { onClick: this.props.handleGoClick },
+                { type: 'submit', onClick: this.props.handleGoClick },
                 'Go'
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__MyLocation_js__["a" /* default */], { handleLocationClick: this.props.handleLocationClick })
@@ -18379,7 +18460,7 @@ class SearchForm extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
 /* harmony default export */ __webpack_exports__["a"] = (SearchForm);
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18398,40 +18479,6 @@ function MyLocation(props) {
 /* harmony default export */ __webpack_exports__["a"] = (MyLocation);
 
 /***/ }),
-/* 30 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SearchResult_js__ = __webpack_require__(31);
-
-
-
-class SearchResultContainer extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isAmbiguous: false,
-            list: []
-        };
-    }
-    ajaxSend() {
-        console.log(3333333333333);
-    }
-
-    render() {
-        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__SearchResult_js__["a" /* default */], {
-            inputText: this.props.inputText,
-            isAmbiguous: this.state.isAmbiguous,
-            list: this.state.list
-        });
-    }
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (SearchResultContainer);
-
-/***/ }),
 /* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -18440,28 +18487,33 @@ class SearchResultContainer extends __WEBPACK_IMPORTED_MODULE_0_react___default.
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 
 
+function ListItem(props) {
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'li',
+        null,
+        props.value
+    );
+}
+
 function SearchResult(props) {
+    const listItems = props.list.map(item => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ListItem, { key: item.toString(),
+        value: item.long_title }));
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         null,
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        props.isLocationMode ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            null,
+            'Please select a location below:'
+        ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'div',
             null,
             'Recent searches:'
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'div',
-            null,
-            'Please select a location below:'
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'ul',
             null,
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'li',
-                null,
-                props.inputText
-            )
+            listItems
         )
     );
 }
