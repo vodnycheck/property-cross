@@ -9,12 +9,6 @@ class SearchResultContainer extends React.Component {
             list: []
         }
     }
-    componentDidMount() {
-        this.props.onRef(this)
-    }
-    componentWillUnmount() {
-        this.props.onRef(undefined)
-    }
     ajaxSend(){
         console.log(3333333333333)
     }

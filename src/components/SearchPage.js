@@ -24,7 +24,6 @@ class SearchPage extends React.Component {
 
     handleGoClick() {
         console.log(111111111)
-        this.child.ajaxSend() // do stuff
     }
 
     handleLocationClick() {
@@ -46,7 +45,6 @@ class SearchPage extends React.Component {
                 />
                 <SearchResultContainer
                     inputText={this.state.inputText}
-                    onRef={ref => (this.child = ref)}
                 />
             </div>
         );

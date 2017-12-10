@@ -18293,7 +18293,6 @@ class SearchPage extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
 
     handleGoClick() {
         console.log(111111111);
-        this.child.ajaxSend(); // do stuff
     }
 
     handleLocationClick() {
@@ -18332,8 +18331,7 @@ class SearchPage extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
                 inputText: this.state.inputText
             }),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__SearchResultContainer_js__["a" /* default */], {
-                inputText: this.state.inputText,
-                onRef: ref => this.child = ref
+                inputText: this.state.inputText
             })
         );
     }
@@ -18352,23 +18350,33 @@ class SearchPage extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
 
 
 
-function SearchPage(props) {
-    const element = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        null,
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { autoFocus: true, type: 'text', value: props.inputText, onChange: props.handleInputChange }),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'button',
-            { onClick: props.handleGoClick },
-            'Go'
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__MyLocation_js__["a" /* default */], { handleLocationClick: props.handleLocationClick })
-    );
+class SearchForm extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+    constructor(props) {
+        super(props);
+    }
 
-    return element;
+    componentDidMount() {
+        this.textInput.focus();
+    }
+
+    render() {
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            null,
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { ref: elem => {
+                    this.textInput = elem;
+                }, type: 'text', value: this.props.inputText, onChange: this.props.handleInputChange }),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'button',
+                { onClick: this.props.handleGoClick },
+                'Go'
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__MyLocation_js__["a" /* default */], { handleLocationClick: this.props.handleLocationClick })
+        );
+    }
 }
 
-/* harmony default export */ __webpack_exports__["a"] = (SearchPage);
+/* harmony default export */ __webpack_exports__["a"] = (SearchForm);
 
 /***/ }),
 /* 29 */
@@ -18407,12 +18415,6 @@ class SearchResultContainer extends __WEBPACK_IMPORTED_MODULE_0_react___default.
             isAmbiguous: false,
             list: []
         };
-    }
-    componentDidMount() {
-        this.props.onRef(this);
-    }
-    componentWillUnmount() {
-        this.props.onRef(undefined);
     }
     ajaxSend() {
         console.log(3333333333333);

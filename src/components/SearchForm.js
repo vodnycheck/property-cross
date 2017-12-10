@@ -1,16 +1,22 @@
 import React from 'react';
 import MyLocation from './MyLocation.js';
 
-function SearchPage(props){
-    const element = (
-        <div>
-            <input autoFocus type="text" value={props.inputText} onChange={props.handleInputChange}/>
-            <button onClick={props.handleGoClick}>Go</button>
-            <MyLocation handleLocationClick={props.handleLocationClick} />
-        </div>
-    );
+class SearchForm extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
-    return element;
+    componentDidMount() {
+        this.textInput.focus();
+    }
+
+    render(){
+        return <div>
+            <input ref={elem => { this.textInput = elem; }} type="text" value={this.props.inputText} onChange={this.props.handleInputChange}/>
+            <button onClick={this.props.handleGoClick}>Go</button>
+            <MyLocation handleLocationClick={this.props.handleLocationClick} />
+        </div>;
+    }
 }
 
-export default SearchPage;
+export default SearchForm;
