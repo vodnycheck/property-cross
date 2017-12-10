@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Button from './components/Button.js';
+import SearchPage from './components/SearchPage.js';
 
 ReactDOM.render(
-		<Button />,
+		<SearchPage />,
 		document.getElementById('root')
 );
