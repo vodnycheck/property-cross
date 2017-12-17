@@ -1,6 +1,6 @@
 import React from 'react';
-import SearchForm from './SearchForm.js';
-import SearchResult from './SearchResult.js';
+import SearchForm from '../components/SearchForm.js';
+import SearchResult from '../components/SearchResult.js';
 
 class SearchPage extends React.Component {
     constructor(props) {
