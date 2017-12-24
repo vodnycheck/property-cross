@@ -5,6 +5,7 @@ function Property(props){
 		<div>
 			Property Page
 			{props.listing.title}
+			<button onClick={props.setLocalStorageItem(props.listing, 'favsList')}>Add to favs</button>
 		</div>
 	);
 }

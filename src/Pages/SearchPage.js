@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 import SearchForm from '../components/SearchForm.js';
 import SearchResult from '../components/SearchResult.js';
 
@@ -11,7 +12,7 @@ class SearchPage extends React.Component {
         return (
             <div>
                 <h1>Property Cross</h1>
-                <a href="/favor">favor</a>
+                <Link to="/favs">favor</Link>
                 <div>spinner</div>
                 <p>Use the form below to search for houses to buy. You can search by place-name, postcode, or click 'My location', to search in your current location!</p>
                 <SearchForm

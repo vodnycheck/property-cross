@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import SearchPage from './Pages/SearchPage.js';
 import SearchResultsPage from './Pages/SearchResultsPage.js';
 import Property from './Pages/Property.js';
+import Favs from './Pages/Favs.js';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom'
 import {withRouter} from "react-router-dom";
 
@@ -21,7 +22,8 @@ class RootComponent extends React.Component {
 			maxPageNumber: 5,
 			currentPageNumber: 1,
 			listing:{},
-			recentSearchList: []
+			recentSearchList: [],
+			favsList: [],
 		};
 
 		this.handleInputChange = this.handleInputChange.bind(this);
@@ -31,6 +33,7 @@ class RootComponent extends React.Component {
 		this.handleRouteChange = this.handleRouteChange.bind(this);
 		this.handleSetNewPropertyListing = this.handleSetNewPropertyListing.bind(this);
 		this.handleRecentClick = this.handleRecentClick.bind(this);
+		this.setLocalStorageItem = this.setLocalStorageItem.bind(this);
 	}
 
 	handleInputChange(e) {
@@ -40,13 +43,8 @@ class RootComponent extends React.Component {
 	}
 
 	componentWillMount(){
-		if (localStorage.getItem("recentSearchList") !== null) {
-			this.setState({
-				recentSearchList: JSON.parse(localStorage.getItem("recentSearchList"))
-			});
-		} else {
-			localStorage.setItem('recentSearchList', '[]');
-		}
+		this.getFromLocalStorage('recentSearchList');
+		this.getFromLocalStorage('favsList');
 	}
 
 	handleGoClick(e) {
@@ -68,7 +66,7 @@ class RootComponent extends React.Component {
 					placeToRedirect: '/results'
 				});
 
-				this.setLocalStorageItem(this.state.inputText);
+				this.setLocalStorageItem(this.state.inputText, 'recentSearchList');
 			}
 			if (code == 200 || code == 201 || code == 202) {
 				this.setState({
@@ -80,16 +78,24 @@ class RootComponent extends React.Component {
 		}).catch(  );
 	}
 
-	setLocalStorageItem(newItem) {
-		let recentSearchList = this.state.recentSearchList;
-		let isNewValue = recentSearchList.indexOf(newItem) === -1;
+	getFromLocalStorage(key){
+		if (localStorage.getItem(key) !== null) {
+			let newState = {};
+			newState[key] = JSON.parse(localStorage.getItem(key));
+			this.setState(newState);
+		} else {
+			localStorage.setItem(key, '[]');
+		}
+	}
 
-		if (isNewValue) {
-			recentSearchList.push(newItem);
-			this.setState({
-				recentSearchList: recentSearchList
-			});
-			localStorage.setItem('recentSearchList', JSON.stringify(recentSearchList));
+	setLocalStorageItem(newItem, key) {
+		let list = this.state[key];
+		if (list.indexOf(newItem) === -1) {
+			list.push(newItem);
+			let newState = {};
+			newState[key] = list;
+			this.setState(newState);
+			localStorage.setItem(key, JSON.stringify(list));
 		}
 	}
 
@@ -162,9 +168,14 @@ class RootComponent extends React.Component {
 					<Route path="/property" render={props => (
 						<Property
 							listing={this.state.listing}
+							setLocalStorageItem={this.setLocalStorageItem}
 						/>
 					)} />
-					<Route path="/favs" />
+					<Route path="/favs" render={(props) => (
+						<Favs
+							list={this.state.favsList}
+						/>
+					)}/>
 				</Switch>
 			</HashRouter>
 		)
