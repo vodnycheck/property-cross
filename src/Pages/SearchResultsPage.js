@@ -32,6 +32,11 @@ class SearchResultsPage extends React.Component {
 								 <div>{item.title}</div>
 								 <div>{item.price_currency + item.price}</div>
 							 </Link>
+							 {this.props.isInLocalStorage('favsList', item) ? (
+									 <button onClick={() => this.props.removeLocalStorageItem(item, 'favsList')}>Remove from favs</button>
+							 ) : (
+									 <button onClick={() => this.props.setLocalStorageItem(item, 'favsList')}>Add to favs</button>
+							 )}
 						 </li>)
 					}
 				</ul>

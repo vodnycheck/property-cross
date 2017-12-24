@@ -6,6 +6,7 @@ import Property from './Pages/Property.js';
 import Favs from './Pages/Favs.js';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom'
 import {withRouter} from "react-router-dom";
+import isEqual from "lodash";
 
 
 class RootComponent extends React.Component {
@@ -34,6 +35,8 @@ class RootComponent extends React.Component {
 		this.handleSetNewPropertyListing = this.handleSetNewPropertyListing.bind(this);
 		this.handleRecentClick = this.handleRecentClick.bind(this);
 		this.setLocalStorageItem = this.setLocalStorageItem.bind(this);
+		this.removeLocalStorageItem = this.removeLocalStorageItem.bind(this);
+		this.isInLocalStorage = this.isInLocalStorage.bind(this);
 	}
 
 	handleInputChange(e) {
@@ -45,6 +48,8 @@ class RootComponent extends React.Component {
 	componentWillMount(){
 		this.getFromLocalStorage('recentSearchList');
 		this.getFromLocalStorage('favsList');
+
+		console.log(_.isEqual(1, 1));
 	}
 
 	handleGoClick(e) {
@@ -90,11 +95,53 @@ class RootComponent extends React.Component {
 
 	setLocalStorageItem(newItem, key) {
 		let list = this.state[key];
-		if (list.indexOf(newItem) === -1) {
+		let isRepeat = this.isInArray(list, newItem);
+
+		if (!isRepeat) {
 			list.push(newItem);
 			let newState = {};
 			newState[key] = list;
 			this.setState(newState);
+			localStorage.setItem(key, JSON.stringify(list));
+		}
+	}
+
+	isInArray(array, item) {
+		let isInArray = false;
+		array.forEach((x)=>{
+			if (_.isEqual(x, item)) {
+				isInArray = true;
+			}
+		});
+		return isInArray;
+	}
+
+	indexInArray(array, item) {
+		let index = -1;
+		array.forEach((x, i)=>{
+			if (_.isEqual(x, item)) {
+				index = i;
+			}
+		});
+		return index;
+	}
+
+	isInLocalStorage(key, item) {
+		let list = this.state[key];
+		return this.isInArray(list, item)
+	}
+
+	removeLocalStorageItem(item, key) {
+		let list = this.state[key];
+		let index = this.indexInArray(list, item);
+
+		if (index !== -1) {
+			list.splice(index, 1);
+
+			let newState = {};
+			newState[key] = list;
+			this.setState(newState);
+
 			localStorage.setItem(key, JSON.stringify(list));
 		}
 	}
@@ -163,17 +210,26 @@ class RootComponent extends React.Component {
 							handlePageChange={this.handlePageChange}
 							handleRouteChange={this.handleRouteChange}
 							handleSetNewPropertyListing={this.handleSetNewPropertyListing}
+							setLocalStorageItem={this.setLocalStorageItem}
+							isInLocalStorage={this.isInLocalStorage}
+							removeLocalStorageItem={this.removeLocalStorageItem}
 						/>
 					)}/>
 					<Route path="/property" render={props => (
 						<Property
 							listing={this.state.listing}
 							setLocalStorageItem={this.setLocalStorageItem}
+							isInLocalStorage={this.isInLocalStorage}
+							removeLocalStorageItem={this.removeLocalStorageItem}
 						/>
 					)} />
 					<Route path="/favs" render={(props) => (
 						<Favs
 							list={this.state.favsList}
+							handleSetNewPropertyListing={this.handleSetNewPropertyListing}
+							removeLocalStorageItem={this.removeLocalStorageItem}
+							setLocalStorageItem={this.setLocalStorageItem}
+							isInLocalStorage={this.isInLocalStorage}
 						/>
 					)}/>
 				</Switch>

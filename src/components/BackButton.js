@@ -16,7 +16,7 @@ class BackButton extends React.Component {
 	render() {
 		return (
 				<button onClick={this.handleBack}>
-					Back!!!
+					{'<'} Back
 				</button>
 		)
 	}
