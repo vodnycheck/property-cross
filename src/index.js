@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import SearchPage from './Pages/SearchPage.js';
 import SearchResultsPage from './Pages/SearchResultsPage.js';
+import Property from './Pages/Property.js';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom'
 import {withRouter} from "react-router-dom";
 
@@ -12,13 +13,15 @@ class RootComponent extends React.Component {
 		this.state = {
 			list: [],
 			errorState: 0,//1 — no properties
+			errorMessage: '',
 			inputText: '',
-			isLocationMode: false,
 			isRedirectNeeded: false,
 			placeToRedirect: '',
 			pendingState: false,
 			maxPageNumber: 5,
-			currentPageNumber: 1
+			currentPageNumber: 1,
+			listing:{},
+			recentSearchList: []
 		};
 
 		this.handleInputChange = this.handleInputChange.bind(this);
@@ -26,6 +29,8 @@ class RootComponent extends React.Component {
 		this.handleLocationClick = this.handleLocationClick.bind(this);
 		this.handlePageChange = this.handlePageChange.bind(this);
 		this.handleRouteChange = this.handleRouteChange.bind(this);
+		this.handleSetNewPropertyListing = this.handleSetNewPropertyListing.bind(this);
+		this.handleRecentClick = this.handleRecentClick.bind(this);
 	}
 
 	handleInputChange(e) {
@@ -34,64 +39,80 @@ class RootComponent extends React.Component {
 		});
 	}
 
+	componentWillMount(){
+		if (localStorage.getItem("recentSearchList") !== null) {
+			this.setState({
+				recentSearchList: JSON.parse(localStorage.getItem("recentSearchList"))
+			});
+		} else {
+			localStorage.setItem('recentSearchList', '[]');
+		}
+	}
+
 	handleGoClick(e) {
 		e.preventDefault();
 		const originBody = '?country=uk&pretty=1&action=search_listings&encoding=json&listing_type=buy&page=1&place_name=';
 		fetch('https://api.nestoria.co.uk/api' + originBody + this.state.inputText, {
 			method: 'GET',
-			cache: 'default',
+			cache: 'force-cache',
 			mode: 'cors'
-		})
-				.then(response => {
-					let code = response.status;
-					if (code == 100 || code == 101 || code == 110) {
-						this.setState({
-							isLocationMode: false,
-							isRedirectNeeded: true,
-							placeToRedirect: '/results'
-						});
-					}
-					if (code == 200 || code == 202) {
-						this.setState({
-							isLocationMode: true,
-							isRedirectNeeded: true,
-							placeToRedirect: '/results'
-						});
-					}
-					return response.json();
-				})
-				.then(data => {
-					if (this.state.isLocationMode) {
-						this.setState({
-							list: data.response.locations
-						});
-						if (data.response.locations.length === 0) {
-							this.setState({
-								errorState: 1
-							});
-						} else {
-							this.setState({
-								errorState: 0
-							});
-						}
-					} else {
-						this.setState({
-							list: data.response.listings,
-							errorState: 0
-						});
-					}
-				})
-				.catch(  );
+		}).then(response => {
+			return response.json();
+		}).then(x => {
+			let response = x.response;
+			let code = response.application_response_code;
+			if (code == 100 || code == 101 || code == 110) {
+				this.setState({
+					list: response.listings,
+					isRedirectNeeded: true,
+					placeToRedirect: '/results'
+				});
+
+				this.setLocalStorageItem(this.state.inputText);
+			}
+			if (code == 200 || code == 201 || code == 202) {
+				this.setState({
+					isRedirectNeeded: false,
+					errorState: 1,
+					errorMessage: 'Bad request'
+				});
+			}
+		}).catch(  );
+	}
+
+	setLocalStorageItem(newItem) {
+		let recentSearchList = this.state.recentSearchList;
+		let isNewValue = recentSearchList.indexOf(newItem) === -1;
+
+		if (isNewValue) {
+			recentSearchList.push(newItem);
+			this.setState({
+				recentSearchList: recentSearchList
+			});
+			localStorage.setItem('recentSearchList', JSON.stringify(recentSearchList));
+		}
 	}
 
 	handleLocationClick() {
 		console.log(222222222)
 	}
 
+	handleSetNewPropertyListing(newListing) {
+		this.setState({
+			listing: newListing
+		});
+	}
+
 	handleRouteChange() {
 		this.setState({
 			isRedirectNeeded: false
 		});
+	}
+
+	handleRecentClick(e, request) {
+		this.setState({
+			inputText: request
+		},() =>{this.handleGoClick(e)});
 	}
 
 	handlePageChange(number) {
@@ -115,14 +136,14 @@ class RootComponent extends React.Component {
 						}} />
 					) : (
 						<SearchPage
-							list={this.state.list}
 							errorState={this.state.errorState}
 							inputText={this.state.inputText}
-							isLocationMode={this.state.isLocationMode}
 							pendingState={this.state.pendingState}
+							recentSearchList={this.state.recentSearchList}
 							handleInputChange={this.handleInputChange}
 							handleGoClick={this.handleGoClick}
 							handleLocationClick={this.handleLocationClick}
+							handleRecentClick={this.handleRecentClick}
 						/>
 					)
 
@@ -130,14 +151,19 @@ class RootComponent extends React.Component {
 					} />
 					<Route path="/results" render={(props) => (
 						<SearchResultsPage
-							results={this.list}
+							results={this.state.list}
 							maxPageNumber={this.state.maxPageNumber}
 							currentPageNumber={this.state.currentPageNumber}
 							handlePageChange={this.handlePageChange}
 							handleRouteChange={this.handleRouteChange}
+							handleSetNewPropertyListing={this.handleSetNewPropertyListing}
 						/>
 					)}/>
-					<Route path="/listing" />
+					<Route path="/property" render={props => (
+						<Property
+							listing={this.state.listing}
+						/>
+					)} />
 					<Route path="/favs" />
 				</Switch>
 			</HashRouter>

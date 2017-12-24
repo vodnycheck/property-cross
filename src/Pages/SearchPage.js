@@ -21,10 +21,8 @@ class SearchPage extends React.Component {
                     inputText={this.props.inputText}
                 />
                 <SearchResult
-                    inputText={this.props.inputText}
-                    isAmbiguous={this.props.isAmbiguous}
-                    list={this.props.list}
-                    isLocationMode={this.props.isLocationMode}
+                    recentSearchList={this.props.recentSearchList}
+                    handleRecentClick={this.props.handleRecentClick}
                 />
             </div>
         );

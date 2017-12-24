@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 import BackButton from '../components/BackButton.js';
 import PageNumber from '../components/PageNumber.js';
 
@@ -24,9 +25,14 @@ class SearchResultsPage extends React.Component {
 				/>
 				<ul>
 					{
-						/*props.list.map((item) =>
-						 <li key={item.toString()}>
-						 </li>)*/
+						this.props.results.map((item, index) =>
+						 <li key={index}>
+							 <Link to="/property" onClick={() => this.props.handleSetNewPropertyListing(item)}>
+								 <img src={item.img_url} alt="property picture"/>
+								 <div>{item.title}</div>
+								 <div>{item.price_currency + item.price}</div>
+							 </Link>
+						 </li>)
 					}
 				</ul>
 			</div>
