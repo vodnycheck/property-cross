@@ -2789,11 +2789,16 @@ class RootComponent extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 		this.getFromLocalStorage('favsList');
 	}
 
-	handleGoClick(e) {
-		typeof e !== "undefined" ? e.persist() : '';
+	requestToServer(settings) {
+		const originBody = '?country=uk&pretty=1&action=search_listings&encoding=json';
+		let parameters = '';
+		if (typeof settings !== 'undefined' && settings.location === true) {
+			parameters = '&centre_point=' + settings.latitude + ',' + settings.longitude;
+		} else {
+			parameters = '&place_name=' + this.state.inputText;
+		}
 
-		const originBody = '?country=uk&pretty=1&action=search_listings&encoding=json&listing_type=buy';
-		fetch('https://api.nestoria.co.uk/api' + originBody + '&page=' + this.state.currentPageNumber + '&place_name=' + this.state.inputText, {
+		fetch('https://api.nestoria.co.uk/api' + originBody + '&page=' + this.state.currentPageNumber + parameters, {
 			method: 'GET',
 			cache: 'force-cache',
 			mode: 'cors'
@@ -2816,10 +2821,15 @@ class RootComponent extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 				this.setState({
 					isRedirectNeeded: false,
 					errorState: 1,
-					errorMessage: 'Bad request'
+					errorMessage: response.application_response_text
 				});
 			}
 		}).catch();
+	}
+
+	handleGoClick(e) {
+		typeof e !== "undefined" ? e.persist() : '';
+		this.requestToServer();
 	}
 
 	getFromLocalStorage(key) {
@@ -2885,7 +2895,33 @@ class RootComponent extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 		}
 	}
 
-	handleLocationClick() {
+	handleLocationClick(e) {
+		typeof e !== "undefined" ? e.persist() : '';
+
+		if ("geolocation" in navigator) {
+			navigator.geolocation.getCurrentPosition(position => {
+				let settings = {};
+				settings.location = true;
+				settings.latitude = position.coords.latitude;
+				settings.longitude = position.coords.longitude;
+				this.setState({
+					errorState: 0,
+					errorMessage: ''
+				});
+				this.requestToServer(settings);
+			}, () => {
+				this.setState({
+					errorState: 1,
+					errorMessage: 'Location is unavailable'
+				});
+			});
+		} else {
+			this.setState({
+				errorState: 1,
+				errorMessage: 'Location is unavailable'
+			});
+		}
+
 		console.log('location dump');
 	}
 
@@ -2905,7 +2941,7 @@ class RootComponent extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 		this.setState({
 			inputText: request
 		}, () => {
-			this.handleGoClick(e);
+			this.requestToServer();
 		});
 	}
 
@@ -2914,7 +2950,7 @@ class RootComponent extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 			this.setState({
 				currentPageNumber: number
 			}, () => {
-				this.handleGoClick();
+				this.requestToServer();
 			});
 		}
 	}
@@ -20303,6 +20339,11 @@ class SearchPage extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
                 null,
                 'Use the form below to search for houses to buy. You can search by place-name, postcode, or click \'My location\', to search in your current location!'
             ),
+            this.props.errorState > 0 ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'p',
+                null,
+                this.props.errorMessage
+            ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', null),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__components_SearchForm_js__["a" /* default */], {
                 handleLocationClick: this.props.handleLocationClick,
                 handleInputChange: this.props.handleInputChange,
@@ -23891,7 +23932,7 @@ class PageNumber extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
 					'<<'
 				),
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-					'div',
+					'span',
 					null,
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'number', value: this.state.page, onChange: this.handlePageNumberChange }),
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(

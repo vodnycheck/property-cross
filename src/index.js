@@ -50,13 +50,17 @@ class RootComponent extends React.Component {
 		this.getFromLocalStorage('favsList');
 	}
 
-	handleGoClick(e) {
-		typeof e !== "undefined" ? e.persist() : '';
+	requestToServer(settings) {
+		const originBody = '?country=uk&pretty=1&action=search_listings&encoding=json';
+		let parameters = '';
+		if (typeof settings !== 'undefined' && settings.location === true) {
+			parameters = '&centre_point=' + settings.latitude + ',' + settings.longitude;
+		} else {
+			parameters = '&place_name=' + this.state.inputText;
+		}
 
-		const originBody = '?country=uk&pretty=1&action=search_listings&encoding=json&listing_type=buy';
 		fetch('https://api.nestoria.co.uk/api' + originBody +
-				'&page=' + this.state.currentPageNumber +
-				'&place_name=' + this.state.inputText, {
+				'&page=' + this.state.currentPageNumber + parameters, {
 			method: 'GET',
 			cache: 'force-cache',
 			mode: 'cors'
@@ -79,10 +83,15 @@ class RootComponent extends React.Component {
 				this.setState({
 					isRedirectNeeded: false,
 					errorState: 1,
-					errorMessage: 'Bad request'
+					errorMessage: response.application_response_text
 				});
 			}
 		}).catch(  );
+	}
+
+	handleGoClick(e) {
+		typeof e !== "undefined" ? e.persist() : '';
+		this.requestToServer();
 	}
 
 	getFromLocalStorage(key){
@@ -148,7 +157,33 @@ class RootComponent extends React.Component {
 		}
 	}
 
-	handleLocationClick() {
+	handleLocationClick(e) {
+		typeof e !== "undefined" ? e.persist() : '';
+
+		if ("geolocation" in navigator) {
+			navigator.geolocation.getCurrentPosition((position) => {
+				let settings = {};
+				settings.location = true;
+				settings.latitude = position.coords.latitude;
+				settings.longitude = position.coords.longitude;
+				this.setState({
+					errorState: 0,
+					errorMessage: ''
+				});
+				this.requestToServer(settings);
+			}, () => {
+				this.setState({
+					errorState: 1,
+					errorMessage: 'Location is unavailable'
+				});
+			});
+		} else {
+			this.setState({
+				errorState: 1,
+				errorMessage: 'Location is unavailable'
+			});
+		}
+
 		console.log('location dump')
 	}
 
@@ -167,14 +202,14 @@ class RootComponent extends React.Component {
 	handleRecentClick(e, request) {
 		this.setState({
 			inputText: request
-		},() =>{this.handleGoClick(e)});
+		},() =>{this.requestToServer()});
 	}
 
 	handlePageChange(number) {
 		if (number !== this.state.currentPageNumber) {
 			this.setState({
 				currentPageNumber: number
-			},()=>{this.handleGoClick()});
+			},()=>{this.requestToServer()});
 		}
 	}
 
