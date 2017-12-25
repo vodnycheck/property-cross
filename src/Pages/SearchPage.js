@@ -13,7 +13,6 @@ class SearchPage extends React.Component {
             <div>
                 <h1>Property Cross</h1>
                 <Link to="/favs">favor</Link>
-                <div>spinner</div>
                 <p>Use the form below to search for houses to buy. You can search by place-name, postcode, or click 'My location', to search in your current location!</p>
                 {this.props.errorState > 0 ? (
                     <p>{this.props.errorMessage}</p>

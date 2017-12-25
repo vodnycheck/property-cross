@@ -1,5 +1,4 @@
-my location
-spinner
+Переадресация на главную при перезагрузке (указывать дополнительные параметры в URL)
 scss
 styles incapsulation
 styles

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import SearchPage from './Pages/SearchPage.js';
 import SearchResultsPage from './Pages/SearchResultsPage.js';
+import Spinner from './components/Spinner.js';
 import Property from './Pages/Property.js';
 import Favs from './Pages/Favs.js';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom'
@@ -13,6 +14,7 @@ class RootComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			showSpinner: false,
 			list: [],
 			errorState: 0,//1 — no properties
 			errorMessage: '',
@@ -51,9 +53,14 @@ class RootComponent extends React.Component {
 	}
 
 	requestToServer(settings) {
+		this.setState({
+			showSpinner: true
+		});
+
 		const originBody = '?country=uk&pretty=1&action=search_listings&encoding=json';
 		let parameters = '';
-		if (typeof settings !== 'undefined' && settings.location === true) {
+		const isLocation = typeof settings !== 'undefined' && settings.location === true ? true : false;
+		if (isLocation) {
 			parameters = '&centre_point=' + settings.latitude + ',' + settings.longitude;
 		} else {
 			parameters = '&place_name=' + this.state.inputText;
@@ -67,6 +74,9 @@ class RootComponent extends React.Component {
 		}).then(response => {
 			return response.json();
 		}).then(x => {
+			this.setState({
+				showSpinner: false
+			});
 			let response = x.response;
 			let code = response.application_response_code;
 			if (code == 100 || code == 101 || code == 110) {
@@ -77,7 +87,7 @@ class RootComponent extends React.Component {
 					maxPageNumber: response.total_pages,
 				});
 
-				this.setLocalStorageItem(this.state.inputText, 'recentSearchList');
+				(!isLocation) && (this.setLocalStorageItem(this.state.inputText, 'recentSearchList'));
 			}
 			if (code == 200 || code == 201 || code == 202) {
 				this.setState({
@@ -215,6 +225,8 @@ class RootComponent extends React.Component {
 
 	render() {
 		return (
+		<div>
+			<Spinner show={this.state.showSpinner}/>
 			<HashRouter>
 				<Switch>
 					<Route exact path="/" render={(props) => (
@@ -270,6 +282,7 @@ class RootComponent extends React.Component {
 					)}/>
 				</Switch>
 			</HashRouter>
+		</div>
 		)
 	}
 }

@@ -2732,12 +2732,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Pages_SearchPage_js__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Pages_SearchResultsPage_js__ = __webpack_require__(80);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Pages_Property_js__ = __webpack_require__(82);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Pages_Favs_js__ = __webpack_require__(83);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_router_dom__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_lodash__ = __webpack_require__(84);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Pages_SearchResultsPage_js__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Spinner_js__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Pages_Property_js__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Pages_Favs_js__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_router_dom__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_lodash__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_lodash__);
+
 
 
 
@@ -2752,6 +2754,7 @@ class RootComponent extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 	constructor(props) {
 		super(props);
 		this.state = {
+			showSpinner: false,
 			list: [],
 			errorState: 0, //1 — no properties
 			errorMessage: '',
@@ -2790,9 +2793,14 @@ class RootComponent extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 	}
 
 	requestToServer(settings) {
+		this.setState({
+			showSpinner: true
+		});
+
 		const originBody = '?country=uk&pretty=1&action=search_listings&encoding=json';
 		let parameters = '';
-		if (typeof settings !== 'undefined' && settings.location === true) {
+		const isLocation = typeof settings !== 'undefined' && settings.location === true ? true : false;
+		if (isLocation) {
 			parameters = '&centre_point=' + settings.latitude + ',' + settings.longitude;
 		} else {
 			parameters = '&place_name=' + this.state.inputText;
@@ -2805,6 +2813,9 @@ class RootComponent extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 		}).then(response => {
 			return response.json();
 		}).then(x => {
+			this.setState({
+				showSpinner: false
+			});
 			let response = x.response;
 			let code = response.application_response_code;
 			if (code == 100 || code == 101 || code == 110) {
@@ -2815,7 +2826,7 @@ class RootComponent extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 					maxPageNumber: response.total_pages
 				});
 
-				this.setLocalStorageItem(this.state.inputText, 'recentSearchList');
+				!isLocation && this.setLocalStorageItem(this.state.inputText, 'recentSearchList');
 			}
 			if (code == 200 || code == 201 || code == 202) {
 				this.setState({
@@ -2957,48 +2968,53 @@ class RootComponent extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 
 	render() {
 		return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-			__WEBPACK_IMPORTED_MODULE_6_react_router_dom__["a" /* HashRouter */],
+			'div',
 			null,
+			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_Spinner_js__["a" /* default */], { show: this.state.showSpinner }),
 			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-				__WEBPACK_IMPORTED_MODULE_6_react_router_dom__["e" /* Switch */],
+				__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["a" /* HashRouter */],
 				null,
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react_router_dom__["d" /* Route */], { exact: true, path: '/', render: props => this.state.isRedirectNeeded ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react_router_dom__["c" /* Redirect */], { push: true, to: {
-							pathname: this.state.placeToRedirect
-						} }) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Pages_SearchPage_js__["a" /* default */], {
-						errorState: this.state.errorState,
-						errorMessage: this.state.errorMessage,
-						inputText: this.state.inputText,
-						pendingState: this.state.pendingState,
-						recentSearchList: this.state.recentSearchList,
-						handleInputChange: this.handleInputChange,
-						handleGoClick: this.handleGoClick,
-						handleLocationClick: this.handleLocationClick,
-						handleRecentClick: this.handleRecentClick
-					}) }),
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react_router_dom__["d" /* Route */], { path: '/results', render: props => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Pages_SearchResultsPage_js__["a" /* default */], {
-						results: this.state.list,
-						maxPageNumber: this.state.maxPageNumber,
-						currentPageNumber: this.state.currentPageNumber,
-						handlePageChange: this.handlePageChange,
-						handleRouteChange: this.handleRouteChange,
-						handleSetNewPropertyListing: this.handleSetNewPropertyListing,
-						setLocalStorageItem: this.setLocalStorageItem,
-						isInLocalStorage: this.isInLocalStorage,
-						removeLocalStorageItem: this.removeLocalStorageItem
-					}) }),
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react_router_dom__["d" /* Route */], { path: '/property', render: props => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Pages_Property_js__["a" /* default */], {
-						listing: this.state.listing,
-						setLocalStorageItem: this.setLocalStorageItem,
-						isInLocalStorage: this.isInLocalStorage,
-						removeLocalStorageItem: this.removeLocalStorageItem
-					}) }),
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react_router_dom__["d" /* Route */], { path: '/favs', render: props => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Pages_Favs_js__["a" /* default */], {
-						list: this.state.favsList,
-						handleSetNewPropertyListing: this.handleSetNewPropertyListing,
-						removeLocalStorageItem: this.removeLocalStorageItem,
-						setLocalStorageItem: this.setLocalStorageItem,
-						isInLocalStorage: this.isInLocalStorage
-					}) })
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["e" /* Switch */],
+					null,
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["d" /* Route */], { exact: true, path: '/', render: props => this.state.isRedirectNeeded ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["c" /* Redirect */], { push: true, to: {
+								pathname: this.state.placeToRedirect
+							} }) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Pages_SearchPage_js__["a" /* default */], {
+							errorState: this.state.errorState,
+							errorMessage: this.state.errorMessage,
+							inputText: this.state.inputText,
+							pendingState: this.state.pendingState,
+							recentSearchList: this.state.recentSearchList,
+							handleInputChange: this.handleInputChange,
+							handleGoClick: this.handleGoClick,
+							handleLocationClick: this.handleLocationClick,
+							handleRecentClick: this.handleRecentClick
+						}) }),
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["d" /* Route */], { path: '/results', render: props => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Pages_SearchResultsPage_js__["a" /* default */], {
+							results: this.state.list,
+							maxPageNumber: this.state.maxPageNumber,
+							currentPageNumber: this.state.currentPageNumber,
+							handlePageChange: this.handlePageChange,
+							handleRouteChange: this.handleRouteChange,
+							handleSetNewPropertyListing: this.handleSetNewPropertyListing,
+							setLocalStorageItem: this.setLocalStorageItem,
+							isInLocalStorage: this.isInLocalStorage,
+							removeLocalStorageItem: this.removeLocalStorageItem
+						}) }),
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["d" /* Route */], { path: '/property', render: props => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Pages_Property_js__["a" /* default */], {
+							listing: this.state.listing,
+							setLocalStorageItem: this.setLocalStorageItem,
+							isInLocalStorage: this.isInLocalStorage,
+							removeLocalStorageItem: this.removeLocalStorageItem
+						}) }),
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["d" /* Route */], { path: '/favs', render: props => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Pages_Favs_js__["a" /* default */], {
+							list: this.state.favsList,
+							handleSetNewPropertyListing: this.handleSetNewPropertyListing,
+							removeLocalStorageItem: this.removeLocalStorageItem,
+							setLocalStorageItem: this.setLocalStorageItem,
+							isInLocalStorage: this.isInLocalStorage
+						}) })
+				)
 			)
 		);
 	}
@@ -20304,7 +20320,7 @@ module.exports = camelize;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_SearchForm_js__ = __webpack_require__(77);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_RecentSearch_js__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_RecentSearch_js__ = __webpack_require__(78);
 
 
 
@@ -20328,11 +20344,6 @@ class SearchPage extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
                 __WEBPACK_IMPORTED_MODULE_1_react_router_dom__["b" /* Link */],
                 { to: '/favs' },
                 'favor'
-            ),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                null,
-                'spinner'
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'p',
@@ -23700,8 +23711,6 @@ module.exports = function hoistNonReactStatics(targetComponent, sourceComponent,
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MyLocation_js__ = __webpack_require__(78);
-
 
 
 class SearchForm extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
@@ -23715,17 +23724,21 @@ class SearchForm extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
 
     render() {
         return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'form',
+            "form",
             null,
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { ref: elem => {
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", { ref: elem => {
                     this.textInput = elem;
-                }, type: 'text', value: this.props.inputText, onChange: this.props.handleInputChange }),
+                }, type: "text", value: this.props.inputText, onChange: this.props.handleInputChange }),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'button',
-                { type: 'submit', onClick: this.props.handleGoClick },
-                'Go'
+                "button",
+                { type: "submit", onClick: this.props.handleGoClick },
+                "Go"
             ),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__MyLocation_js__["a" /* default */], { handleLocationClick: this.props.handleLocationClick })
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "button",
+                { onClick: this.props.handleLocationClick },
+                "My location"
+            )
         );
     }
 }
@@ -23734,25 +23747,6 @@ class SearchForm extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
 
 /***/ }),
 /* 78 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-
-
-function MyLocation(props) {
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'button',
-        { onClick: props.handleLocationClick },
-        'My location'
-    );
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (MyLocation);
-
-/***/ }),
-/* 79 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23788,7 +23782,7 @@ function RecentSearch(props) {
 /* harmony default export */ __webpack_exports__["a"] = (RecentSearch);
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23796,7 +23790,7 @@ function RecentSearch(props) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_BackButton_js__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_PageNumber_js__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_PageNumber_js__ = __webpack_require__(80);
 
 
 
@@ -23860,7 +23854,7 @@ class SearchResultsPage extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Co
 /* harmony default export */ __webpack_exports__["a"] = (SearchResultsPage);
 
 /***/ }),
-/* 81 */
+/* 80 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23954,6 +23948,29 @@ class PageNumber extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (PageNumber);
+
+/***/ }),
+/* 81 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+function Spinner(props) {
+	if (props.show) {
+		return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+			'div',
+			null,
+			'spinner'
+		);
+	} else {
+		return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', null);
+	}
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (Spinner);
 
 /***/ }),
 /* 82 */
