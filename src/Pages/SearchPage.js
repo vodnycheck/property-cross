@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import SearchForm from '../components/SearchForm.js';
-import SearchResult from '../components/SearchResult.js';
+import RecentSearch from '../components/RecentSearch.js';
 
 class SearchPage extends React.Component {
     constructor(props) {
@@ -21,7 +21,7 @@ class SearchPage extends React.Component {
                     handleGoClick={this.props.handleGoClick}
                     inputText={this.props.inputText}
                 />
-                <SearchResult
+                <RecentSearch
                     recentSearchList={this.props.recentSearchList}
                     handleRecentClick={this.props.handleRecentClick}
                 />

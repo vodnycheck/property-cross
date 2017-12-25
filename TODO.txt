@@ -1,7 +1,3 @@
-поменять SearchResult.js Recent searches
-выпилить лишнее
-Вынести функции для работы с local Storage в отдельный компонент, а также посмотреть как можно разгрузить index.js
-pagination
 my location
 spinner
 scss
@@ -9,4 +5,6 @@ styles incapsulation
 styles
 cache reset
 flux
+выпилить лишнее
+Вынести функции для работы с local Storage в отдельный компонент, а также посмотреть как можно разгрузить index.js
 effects D3

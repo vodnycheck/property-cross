@@ -6,8 +6,6 @@ import PageNumber from '../components/PageNumber.js';
 class SearchResultsPage extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-		};
 	}
 
 	componentDidMount(){

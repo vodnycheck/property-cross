@@ -1,6 +1,6 @@
 import React from 'react';
 
-function SearchResult(props){
+function RecentSearch(props){
     return (
         <div>
             <div>Recent searches:</div>
@@ -17,4 +17,4 @@ function SearchResult(props){
     );
 }
 
-export default SearchResult;
+export default RecentSearch;

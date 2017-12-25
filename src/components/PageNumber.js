@@ -52,7 +52,10 @@ class PageNumber extends React.Component{
 			<div>
 				<form onSubmit={this.handlePageNumberGo}>
 					<a href="#" onClick={(e) => this.handlePageNumberMove(e, 'prev')}>{'<<'}</a>
-					<input type="number" value={this.state.page} onChange={this.handlePageNumberChange}/>
+					<span>
+						<input type="number" value={this.state.page} onChange={this.handlePageNumberChange}/>
+						<span>of {this.props.maxPageNumber}</span>
+					</span>
 					<input type="submit" value="Go"/>
 					<a href="#" onClick={(e) => this.handlePageNumberMove(e, 'next')}>{'>>'}</a>
 				</form>

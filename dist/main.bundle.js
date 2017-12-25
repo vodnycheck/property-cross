@@ -2787,14 +2787,13 @@ class RootComponent extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 	componentWillMount() {
 		this.getFromLocalStorage('recentSearchList');
 		this.getFromLocalStorage('favsList');
-
-		console.log(_.isEqual(1, 1));
 	}
 
 	handleGoClick(e) {
-		e.preventDefault();
-		const originBody = '?country=uk&pretty=1&action=search_listings&encoding=json&listing_type=buy&page=1&place_name=';
-		fetch('https://api.nestoria.co.uk/api' + originBody + this.state.inputText, {
+		typeof e !== "undefined" ? e.persist() : '';
+
+		const originBody = '?country=uk&pretty=1&action=search_listings&encoding=json&listing_type=buy';
+		fetch('https://api.nestoria.co.uk/api' + originBody + '&page=' + this.state.currentPageNumber + '&place_name=' + this.state.inputText, {
 			method: 'GET',
 			cache: 'force-cache',
 			mode: 'cors'
@@ -2807,7 +2806,8 @@ class RootComponent extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 				this.setState({
 					list: response.listings,
 					isRedirectNeeded: true,
-					placeToRedirect: '/results'
+					placeToRedirect: '/results',
+					maxPageNumber: response.total_pages
 				});
 
 				this.setLocalStorageItem(this.state.inputText, 'recentSearchList');
@@ -2886,7 +2886,7 @@ class RootComponent extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 	}
 
 	handleLocationClick() {
-		console.log(222222222);
+		console.log('location dump');
 	}
 
 	handleSetNewPropertyListing(newListing) {
@@ -2911,10 +2911,10 @@ class RootComponent extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 
 	handlePageChange(number) {
 		if (number !== this.state.currentPageNumber) {
-			console.log(number);
-
 			this.setState({
 				currentPageNumber: number
+			}, () => {
+				this.handleGoClick();
 			});
 		}
 	}
@@ -2930,6 +2930,7 @@ class RootComponent extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 							pathname: this.state.placeToRedirect
 						} }) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Pages_SearchPage_js__["a" /* default */], {
 						errorState: this.state.errorState,
+						errorMessage: this.state.errorMessage,
 						inputText: this.state.inputText,
 						pendingState: this.state.pendingState,
 						recentSearchList: this.state.recentSearchList,
@@ -20267,7 +20268,7 @@ module.exports = camelize;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_SearchForm_js__ = __webpack_require__(77);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_SearchResult_js__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_RecentSearch_js__ = __webpack_require__(79);
 
 
 
@@ -20308,7 +20309,7 @@ class SearchPage extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
                 handleGoClick: this.props.handleGoClick,
                 inputText: this.props.inputText
             }),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_SearchResult_js__["a" /* default */], {
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_RecentSearch_js__["a" /* default */], {
                 recentSearchList: this.props.recentSearchList,
                 handleRecentClick: this.props.handleRecentClick
             })
@@ -23718,7 +23719,7 @@ function MyLocation(props) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 
 
-function SearchResult(props) {
+function RecentSearch(props) {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         "div",
         null,
@@ -23743,7 +23744,7 @@ function SearchResult(props) {
     );
 }
 
-/* harmony default export */ __webpack_exports__["a"] = (SearchResult);
+/* harmony default export */ __webpack_exports__["a"] = (RecentSearch);
 
 /***/ }),
 /* 80 */
@@ -23763,7 +23764,6 @@ function SearchResult(props) {
 class SearchResultsPage extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
 	}
 
 	componentDidMount() {
@@ -23890,7 +23890,17 @@ class PageNumber extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
 					{ href: '#', onClick: e => this.handlePageNumberMove(e, 'prev') },
 					'<<'
 				),
-				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'number', value: this.state.page, onChange: this.handlePageNumberChange }),
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					'div',
+					null,
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'number', value: this.state.page, onChange: this.handlePageNumberChange }),
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						'span',
+						null,
+						'of ',
+						this.props.maxPageNumber
+					)
+				),
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'submit', value: 'Go' }),
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					'a',

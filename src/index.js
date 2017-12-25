@@ -48,14 +48,15 @@ class RootComponent extends React.Component {
 	componentWillMount(){
 		this.getFromLocalStorage('recentSearchList');
 		this.getFromLocalStorage('favsList');
-
-		console.log(_.isEqual(1, 1));
 	}
 
 	handleGoClick(e) {
-		e.preventDefault();
-		const originBody = '?country=uk&pretty=1&action=search_listings&encoding=json&listing_type=buy&page=1&place_name=';
-		fetch('https://api.nestoria.co.uk/api' + originBody + this.state.inputText, {
+		typeof e !== "undefined" ? e.persist() : '';
+
+		const originBody = '?country=uk&pretty=1&action=search_listings&encoding=json&listing_type=buy';
+		fetch('https://api.nestoria.co.uk/api' + originBody +
+				'&page=' + this.state.currentPageNumber +
+				'&place_name=' + this.state.inputText, {
 			method: 'GET',
 			cache: 'force-cache',
 			mode: 'cors'
@@ -68,7 +69,8 @@ class RootComponent extends React.Component {
 				this.setState({
 					list: response.listings,
 					isRedirectNeeded: true,
-					placeToRedirect: '/results'
+					placeToRedirect: '/results',
+					maxPageNumber: response.total_pages,
 				});
 
 				this.setLocalStorageItem(this.state.inputText, 'recentSearchList');
@@ -147,7 +149,7 @@ class RootComponent extends React.Component {
 	}
 
 	handleLocationClick() {
-		console.log(222222222)
+		console.log('location dump')
 	}
 
 	handleSetNewPropertyListing(newListing) {
@@ -170,11 +172,9 @@ class RootComponent extends React.Component {
 
 	handlePageChange(number) {
 		if (number !== this.state.currentPageNumber) {
-			console.log(number)
-
 			this.setState({
 				currentPageNumber: number
-			});
+			},()=>{this.handleGoClick()});
 		}
 	}
 
@@ -190,6 +190,7 @@ class RootComponent extends React.Component {
 					) : (
 						<SearchPage
 							errorState={this.state.errorState}
+							errorMessage={this.state.errorMessage}
 							inputText={this.state.inputText}
 							pendingState={this.state.pendingState}
 							recentSearchList={this.state.recentSearchList}
