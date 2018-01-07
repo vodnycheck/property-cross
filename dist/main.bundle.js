@@ -2990,7 +2990,7 @@ class RootComponent extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 							handleLocationClick: this.handleLocationClick,
 							handleRecentClick: this.handleRecentClick
 						}) }),
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["d" /* Route */], { path: '/results', render: props => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Pages_SearchResultsPage_js__["a" /* default */], {
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["d" /* Route */], { path: '/results', render: props => this.state.list.length > 0 ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Pages_SearchResultsPage_js__["a" /* default */], {
 							results: this.state.list,
 							maxPageNumber: this.state.maxPageNumber,
 							currentPageNumber: this.state.currentPageNumber,
@@ -3000,13 +3000,13 @@ class RootComponent extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compon
 							setLocalStorageItem: this.setLocalStorageItem,
 							isInLocalStorage: this.isInLocalStorage,
 							removeLocalStorageItem: this.removeLocalStorageItem
-						}) }),
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["d" /* Route */], { path: '/property', render: props => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Pages_Property_js__["a" /* default */], {
+						}) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["c" /* Redirect */], { push: true, to: '/' }) }),
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["d" /* Route */], { path: '/property', render: props => Object.keys(this.state.listing).length > 0 ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__Pages_Property_js__["a" /* default */], {
 							listing: this.state.listing,
 							setLocalStorageItem: this.setLocalStorageItem,
 							isInLocalStorage: this.isInLocalStorage,
 							removeLocalStorageItem: this.removeLocalStorageItem
-						}) }),
+						}) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["c" /* Redirect */], { push: true, to: '/' }) }),
 					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["d" /* Route */], { path: '/favs', render: props => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Pages_Favs_js__["a" /* default */], {
 							list: this.state.favsList,
 							handleSetNewPropertyListing: this.handleSetNewPropertyListing,

@@ -251,25 +251,33 @@ class RootComponent extends React.Component {
 					)
 					} />
 					<Route path="/results" render={(props) => (
-						<SearchResultsPage
-							results={this.state.list}
-							maxPageNumber={this.state.maxPageNumber}
-							currentPageNumber={this.state.currentPageNumber}
-							handlePageChange={this.handlePageChange}
-							handleRouteChange={this.handleRouteChange}
-							handleSetNewPropertyListing={this.handleSetNewPropertyListing}
-							setLocalStorageItem={this.setLocalStorageItem}
-							isInLocalStorage={this.isInLocalStorage}
-							removeLocalStorageItem={this.removeLocalStorageItem}
-						/>
+						this.state.list.length > 0 ? (
+							<SearchResultsPage
+								results={this.state.list}
+								maxPageNumber={this.state.maxPageNumber}
+								currentPageNumber={this.state.currentPageNumber}
+								handlePageChange={this.handlePageChange}
+								handleRouteChange={this.handleRouteChange}
+								handleSetNewPropertyListing={this.handleSetNewPropertyListing}
+								setLocalStorageItem={this.setLocalStorageItem}
+								isInLocalStorage={this.isInLocalStorage}
+								removeLocalStorageItem={this.removeLocalStorageItem}
+							/>
+						) : (
+							<Redirect push={true} to='/' />
+						)
 					)}/>
 					<Route path="/property" render={props => (
-						<Property
-							listing={this.state.listing}
-							setLocalStorageItem={this.setLocalStorageItem}
-							isInLocalStorage={this.isInLocalStorage}
-							removeLocalStorageItem={this.removeLocalStorageItem}
-						/>
+						Object.keys(this.state.listing).length > 0 ? (
+							<Property
+								listing={this.state.listing}
+								setLocalStorageItem={this.setLocalStorageItem}
+								isInLocalStorage={this.isInLocalStorage}
+								removeLocalStorageItem={this.removeLocalStorageItem}
+							/>
+						):(
+							<Redirect push={true} to='/' />
+						)
 					)} />
 					<Route path="/favs" render={(props) => (
 						<Favs
