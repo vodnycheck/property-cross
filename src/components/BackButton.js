@@ -1,5 +1,5 @@
 import React from 'react';
-import createHistory from 'history/createBrowserHistory'
+import createHistory from 'history/createBrowserHistory';
 
 class BackButton extends React.Component {
 	constructor(props) {
@@ -15,11 +15,15 @@ class BackButton extends React.Component {
 
 	render() {
 		return (
-				<button onClick={this.handleBack}>
+				<button onClick={this.handleBack} style={ButtonStyle}>
 					{'<'} Back
 				</button>
 		)
 	}
 }
+
+const ButtonStyle = {
+	color: '#f00',
+};
 
 export default BackButton;

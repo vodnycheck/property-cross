@@ -1574,12 +1574,16 @@ class BackButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
 	render() {
 		return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 			'button',
-			{ onClick: this.handleBack },
+			{ onClick: this.handleBack, style: ButtonStyle },
 			'<',
 			' Back'
 		);
 	}
 }
+
+const ButtonStyle = {
+	color: '#f00'
+};
 
 /* harmony default export */ __webpack_exports__["a"] = (BackButton);
 
