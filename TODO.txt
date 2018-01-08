@@ -1,12 +1,12 @@
-scss
-styles incapsulation
-styles
+Bootstrap
+Make look good
 выпилить лишнее
 Вынести функции для работы с local Storage в отдельный компонент, а также посмотреть как можно разгрузить index.js
 effects D3
 
 
 Стоит изучить:
+production
 прием параметров в роутере
 flux
 cache reset
