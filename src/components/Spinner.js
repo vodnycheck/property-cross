@@ -1,9 +1,10 @@
 import React from 'react';
+import Icon from 'react-icons/lib/fa/circle-o-notch';
 
 function Spinner(props){
 	if (props.show) {
 		return (
-			<div>spinner</div>
+			<Icon className="icon-spin float-right"/>
 		)
 	} else {
 		return (

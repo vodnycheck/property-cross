@@ -1,5 +1,6 @@
 import React from 'react';
 import createHistory from 'history/createBrowserHistory';
+import ChevronLeft from 'react-icons/lib/io/chevron-left';
 
 class BackButton extends React.Component {
 	constructor(props) {
@@ -15,15 +16,11 @@ class BackButton extends React.Component {
 
 	render() {
 		return (
-				<button onClick={this.handleBack} style={ButtonStyle}>
-					{'<'} Back
+				<button onClick={this.handleBack} className="btn">
+					<ChevronLeft /> Back
 				</button>
 		)
 	}
 }
-
-const ButtonStyle = {
-	color: '#f00',
-};
 
 export default BackButton;

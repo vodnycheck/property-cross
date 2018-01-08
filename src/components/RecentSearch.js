@@ -3,11 +3,11 @@ import React from 'react';
 function RecentSearch(props){
     return (
         <div>
-            <div>Recent searches:</div>
-            <ul>
+            <h2>Recent searches:</h2>
+            <ul className="list-group">
                 {
                     props.recentSearchList.map((item,index)=>
-                        <li key={index}>
+                        <li key={index} className="list-group-item">
                             <a href="#" onClick={(e) => props.handleRecentClick(e,item)}>{item}</a>
                         </li>
                     )

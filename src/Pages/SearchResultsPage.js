@@ -14,8 +14,8 @@ class SearchResultsPage extends React.Component {
 
 	render(){
 		return (
-			<div>
-				<BackButton />
+			<div className="container">
+				<h1><BackButton className="float-left mt-2" /> Search results</h1>
 				<PageNumber
 					currentPageNumber={this.props.currentPageNumber}
 					handlePageChange={this.props.handlePageChange}

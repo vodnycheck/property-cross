@@ -1,4 +1,6 @@
 import React from 'react';
+import Back from 'react-icons/lib/fa/backward';
+import Forward from 'react-icons/lib/fa/forward';
 
 class PageNumber extends React.Component{
 	constructor(props) {
@@ -50,14 +52,19 @@ class PageNumber extends React.Component{
 	render() {
 		return (
 			<div>
-				<form onSubmit={this.handlePageNumberGo}>
-					<a href="#" onClick={(e) => this.handlePageNumberMove(e, 'prev')}>{'<<'}</a>
-					<span>
-						<input type="number" value={this.state.page} onChange={this.handlePageNumberChange}/>
-						<span>of {this.props.maxPageNumber}</span>
-					</span>
-					<input type="submit" value="Go"/>
-					<a href="#" onClick={(e) => this.handlePageNumberMove(e, 'next')}>{'>>'}</a>
+				<form onSubmit={this.handlePageNumberGo} className="row">
+					<div className="col-5 row">
+						<a href="#" onClick={(e) => this.handlePageNumberMove(e, 'prev')} className="btn btn-primary"><Back/></a>
+						<div className="col-5 row">
+							<div className="col">
+								<input type="number" value={this.state.page} onChange={this.handlePageNumberChange} className="form-control"/>
+							</div>
+							<div className="col">of {this.props.maxPageNumber}</div>
+						</div>
+						<input type="submit" value="Go" className="btn btn-primary"/>
+						<a href="#" onClick={(e) => this.handlePageNumberMove(e, 'next')} className="btn btn-primary"><Forward/></a>
+					</div>
+
 				</form>
 			</div>
 		)
