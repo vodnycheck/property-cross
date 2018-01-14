@@ -6,8 +6,8 @@ import ReactDOM from 'react-dom';
 import SearchPage from './Pages/SearchPage.js';
 import SearchResultsPage from './Pages/SearchResultsPage.js';
 import Spinner from './components/Spinner.js';
-import Property from './Pages/Property.js';
-import Favs from './Pages/Favs.js';
+import Property from './Pages/PropertyPage.js';
+import Favs from './Pages/FavsPage.js';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom'
 import {withRouter} from "react-router-dom";
 import isEqual from "lodash";

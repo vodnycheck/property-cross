@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import BackButton from '../components/BackButton.js';
 import PageNumber from '../components/PageNumber.js';
+
 import Star from 'react-icons/lib/io/star';
 import UnStar from 'react-icons/lib/fa/star-o';
 
@@ -39,8 +40,8 @@ class SearchResultsPage extends React.Component {
 							)}
 							<Link to="/property" onClick={() => this.props.handleSetNewPropertyListing(item)} className="row align-items-start">
 								<img src={item.thumb_url} alt="property picture" className="img-fluid m-1"/>
-								<div className="col col-6">
-									<h2>{item.title}</h2>
+								<div className="col">
+									<h2 className="h4">{item.title}</h2>
 									<div>Price: {item.price_currency + item.price}</div>
 								</div>
 							</Link>
