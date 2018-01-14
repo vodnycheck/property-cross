@@ -5,9 +5,7 @@ import Forward from 'react-icons/lib/fa/forward';
 class PageNumber extends React.Component{
 	constructor(props) {
 		super(props);
-		this.state = {
-			page: props.currentPageNumber
-		};
+
 		this.handlePageNumberMove= this.handlePageNumberMove.bind(this);
 		this.handlePageNumberGo= this.handlePageNumberGo.bind(this);
 		this.handlePageNumberChange= this.handlePageNumberChange.bind(this);
@@ -16,57 +14,42 @@ class PageNumber extends React.Component{
 	handlePageNumberMove(e, direction){
 		e.preventDefault();
 		if (direction === 'prev') {
-			if (this.state.page > 1) {
-				this.setState((prevState, props) => ({
-					page: parseInt(prevState.page) - 1
-				}),function(){afterSetState(this.state.page)});
+			if (this.props.currentPageNumber > 1) {
+				this.props.handlePageChange(this.props.currentPageNumber - 1)
 			}
 		} else if (direction === 'next') {
-			if (this.state.page < this.props.maxPageNumber) {
-				this.setState((prevState, props) => ({
-					page: parseInt(prevState.page) + 1
-				}),function(){afterSetState(this.state.page)});
+			if (this.props.currentPageNumber < this.props.maxPageNumber) {
+				this.props.handlePageChange(this.props.currentPageNumber + 1)
 			}
-		}
-
-		let afterSetState = (number) => {
-			this.props.handlePageChange(number)
 		}
 	}
 
 	handlePageNumberChange(e){
 		if (e.target.value < 1 || e.target.value > this.props.maxPageNumber) {
-			e.target.value = this.state.page
+			e.target.value = this.props.maxPageNumber
 		} else {
-			this.setState({
-				page: parseInt(e.target.value)
-			})
+			this.props.handlePageChange(e.target.value);
 		}
 	}
 
 	handlePageNumberGo(e){
 		e.preventDefault();
-		this.props.handlePageChange(this.state.page)
+		this.props.handlePageChange(this.props.currentPageNumber)
 	}
 
 	render() {
 		return (
-			<div>
-				<form onSubmit={this.handlePageNumberGo} className="row">
-					<div className="col-5 row">
-						<a href="#" onClick={(e) => this.handlePageNumberMove(e, 'prev')} className="btn btn-primary"><Back/></a>
-						<div className="col-5 row">
-							<div className="col">
-								<input type="number" value={this.state.page} onChange={this.handlePageNumberChange} className="form-control"/>
-							</div>
-							<div className="col">of {this.props.maxPageNumber}</div>
-						</div>
-						<input type="submit" value="Go" className="btn btn-primary"/>
-						<a href="#" onClick={(e) => this.handlePageNumberMove(e, 'next')} className="btn btn-primary"><Forward/></a>
+			<form onSubmit={this.handlePageNumberGo} className="row flex-nowrap">
+				<a href="#" onClick={(e) => this.handlePageNumberMove(e, 'prev')} className="btn btn-primary d-flex align-items-center justify-content-center col m-1"><Back/></a>
+				<div className="col-5 row align-items-center">
+					<div className="col">
+						<input type="number" value={this.props.currentPageNumber} onChange={this.handlePageNumberChange} className="form-control"/>
 					</div>
-
-				</form>
-			</div>
+					<div className="col h6">of {this.props.maxPageNumber}</div>
+				</div>
+				<input type="submit" value="Go" className="btn btn-primary col m-1"/>
+				<a href="#" onClick={(e) => this.handlePageNumberMove(e, 'next')} className="btn btn-primary d-flex align-items-center justify-content-center col m-1"><Forward/></a>
+			</form>
 		)
 	}
 }

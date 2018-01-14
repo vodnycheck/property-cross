@@ -11,6 +11,7 @@ import Favs from './Pages/Favs.js';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom'
 import {withRouter} from "react-router-dom";
 import isEqual from "lodash";
+
 const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
 
@@ -70,7 +71,7 @@ class RootComponent extends React.Component {
 			parameters = '&place_name=' + this.state.inputText;
 		}
 
-		fetch(proxyUrl + 'https://api.nestoria.co.uk/api' + originBody +
+		fetch(proxyUrl + 'https://api.nestoria.co.uk/api?number_of_results=20' + originBody +
 				'&page=' + this.state.currentPageNumber + parameters, {
 			method: 'GET',
 			cache: 'force-cache',

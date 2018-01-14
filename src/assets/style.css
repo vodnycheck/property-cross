@@ -2,6 +2,10 @@
 	margin-top: -4px;
 }
 
+.flex-grow-0 {
+	flex-grow: 0;
+}
+
 .icon-spin {
 	-webkit-animation: icon-spin 2s infinite linear;
 	animation: icon-spin 2s infinite linear;

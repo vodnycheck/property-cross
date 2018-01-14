@@ -3308,6 +3308,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
 class RootComponent extends __WEBPACK_IMPORTED_MODULE_2_react___default.a.Component {
@@ -3366,7 +3367,7 @@ class RootComponent extends __WEBPACK_IMPORTED_MODULE_2_react___default.a.Compon
 			parameters = '&place_name=' + this.state.inputText;
 		}
 
-		fetch(proxyUrl + 'https://api.nestoria.co.uk/api' + originBody + '&page=' + this.state.currentPageNumber + parameters, {
+		fetch(proxyUrl + 'https://api.nestoria.co.uk/api?number_of_results=20' + originBody + '&page=' + this.state.currentPageNumber + parameters, {
 			method: 'GET',
 			cache: 'force-cache',
 			mode: 'cors'
@@ -20226,7 +20227,7 @@ exports = module.exports = __webpack_require__(25)(false);
 
 
 // module
-exports.push([module.i, ".btn svg {\r\n\tmargin-top: -4px;\r\n}\r\n\r\n.icon-spin {\r\n\t-webkit-animation: icon-spin 2s infinite linear;\r\n\tanimation: icon-spin 2s infinite linear;\r\n}\r\n\r\n@-webkit-keyframes icon-spin {\r\n\t0% {\r\n\t\t-webkit-transform: rotate(0deg);\r\n\t\ttransform: rotate(0deg);\r\n\t}\r\n\t100% {\r\n\t\t-webkit-transform: rotate(359deg);\r\n\t\ttransform: rotate(359deg);\r\n\t}\r\n}\r\n\r\n@keyframes icon-spin {\r\n\t0% {\r\n\t\t-webkit-transform: rotate(0deg);\r\n\t\ttransform: rotate(0deg);\r\n\t}\r\n\t100% {\r\n\t\t-webkit-transform: rotate(359deg);\r\n\t\ttransform: rotate(359deg);\r\n\t}\r\n}", ""]);
+exports.push([module.i, ".btn svg {\r\n\tmargin-top: -4px;\r\n}\r\n\r\n.flex-grow-0 {\r\n\tflex-grow: 0;\r\n}\r\n\r\n.icon-spin {\r\n\t-webkit-animation: icon-spin 2s infinite linear;\r\n\tanimation: icon-spin 2s infinite linear;\r\n}\r\n\r\n@-webkit-keyframes icon-spin {\r\n\t0% {\r\n\t\t-webkit-transform: rotate(0deg);\r\n\t\ttransform: rotate(0deg);\r\n\t}\r\n\t100% {\r\n\t\t-webkit-transform: rotate(359deg);\r\n\t\ttransform: rotate(359deg);\r\n\t}\r\n}\r\n\r\n@keyframes icon-spin {\r\n\t0% {\r\n\t\t-webkit-transform: rotate(0deg);\r\n\t\ttransform: rotate(0deg);\r\n\t}\r\n\t100% {\r\n\t\t-webkit-transform: rotate(359deg);\r\n\t\ttransform: rotate(359deg);\r\n\t}\r\n}", ""]);
 
 // exports
 
@@ -41281,6 +41282,12 @@ module.exports = exports['default'];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_BackButton_js__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_PageNumber_js__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_icons_lib_io_star__ = __webpack_require__(93);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_icons_lib_io_star___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react_icons_lib_io_star__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_icons_lib_fa_star_o__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_icons_lib_fa_star_o___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_icons_lib_fa_star_o__);
+
+
 
 
 
@@ -41301,46 +41308,74 @@ class SearchResultsPage extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Co
 			{ className: 'container' },
 			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 				'h1',
-				null,
+				{ className: 'd-flex align-items-center' },
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__components_BackButton_js__["a" /* default */], { className: 'float-left mt-2' }),
-				' Search results'
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					'span',
+					{ className: 'col' },
+					'Search results'
+				),
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					'div',
+					{ className: 'ml-auto' },
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_PageNumber_js__["a" /* default */], {
+						currentPageNumber: this.props.currentPageNumber,
+						handlePageChange: this.props.handlePageChange,
+						maxPageNumber: this.props.maxPageNumber
+					})
+				)
 			),
-			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_PageNumber_js__["a" /* default */], {
-				currentPageNumber: this.props.currentPageNumber,
-				handlePageChange: this.props.handlePageChange,
-				maxPageNumber: this.props.maxPageNumber
-			}),
 			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 				'ul',
-				null,
+				{ className: 'list-group my-2' },
 				this.props.results.map((item, index) => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					'li',
-					{ key: index },
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["b" /* Link */],
-						{ to: '/property', onClick: () => this.props.handleSetNewPropertyListing(item) },
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: item.img_url, alt: 'property picture' }),
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							'div',
-							null,
-							item.title
-						),
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							'div',
-							null,
-							item.price_currency + item.price
-						)
-					),
+					{ key: index, className: 'list-group-item' },
 					this.props.isInLocalStorage('favsList', item) ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 						'button',
-						{ onClick: () => this.props.removeLocalStorageItem(item, 'favsList') },
-						'Remove from favs'
+						{ onClick: () => this.props.removeLocalStorageItem(item, 'favsList'), className: 'btn btn-danger float-right' },
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_icons_lib_fa_star_o___default.a, null),
+						' Remove from favs'
 					) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 						'button',
-						{ onClick: () => this.props.setLocalStorageItem(item, 'favsList') },
-						'Add to favs'
+						{ onClick: () => this.props.setLocalStorageItem(item, 'favsList'), className: 'btn btn-primary float-right' },
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_react_icons_lib_io_star___default.a, null),
+						' Add to favs'
+					),
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+						__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["b" /* Link */],
+						{ to: '/property', onClick: () => this.props.handleSetNewPropertyListing(item), className: 'row' },
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: item.img_url, alt: 'property picture', className: 'img-fluid m-1' }),
+						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+							'div',
+							{ className: 'col col-6' },
+							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+								'h2',
+								null,
+								item.title
+							),
+							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+								'div',
+								null,
+								'Price: ',
+								item.price_currency + item.price
+							)
+						)
 					)
 				))
+			),
+			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+				'div',
+				{ className: 'row' },
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					'div',
+					{ className: 'mx-auto' },
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_PageNumber_js__["a" /* default */], {
+						currentPageNumber: this.props.currentPageNumber,
+						handlePageChange: this.props.handlePageChange,
+						maxPageNumber: this.props.maxPageNumber
+					})
+				)
 			)
 		);
 	}
@@ -41404,9 +41439,7 @@ module.exports = exports['default'];
 class PageNumber extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			page: props.currentPageNumber
-		};
+
 		this.handlePageNumberMove = this.handlePageNumberMove.bind(this);
 		this.handlePageNumberGo = this.handlePageNumberGo.bind(this);
 		this.handlePageNumberChange = this.handlePageNumberChange.bind(this);
@@ -41415,80 +41448,58 @@ class PageNumber extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component
 	handlePageNumberMove(e, direction) {
 		e.preventDefault();
 		if (direction === 'prev') {
-			if (this.state.page > 1) {
-				this.setState((prevState, props) => ({
-					page: parseInt(prevState.page) - 1
-				}), function () {
-					afterSetState(this.state.page);
-				});
+			if (this.props.currentPageNumber > 1) {
+				this.props.handlePageChange(this.props.currentPageNumber - 1);
 			}
 		} else if (direction === 'next') {
-			if (this.state.page < this.props.maxPageNumber) {
-				this.setState((prevState, props) => ({
-					page: parseInt(prevState.page) + 1
-				}), function () {
-					afterSetState(this.state.page);
-				});
+			if (this.props.currentPageNumber < this.props.maxPageNumber) {
+				this.props.handlePageChange(this.props.currentPageNumber + 1);
 			}
 		}
-
-		let afterSetState = number => {
-			this.props.handlePageChange(number);
-		};
 	}
 
 	handlePageNumberChange(e) {
 		if (e.target.value < 1 || e.target.value > this.props.maxPageNumber) {
-			e.target.value = this.state.page;
+			e.target.value = this.props.maxPageNumber;
 		} else {
-			this.setState({
-				page: parseInt(e.target.value)
-			});
+			this.props.handlePageChange(e.target.value);
 		}
 	}
 
 	handlePageNumberGo(e) {
 		e.preventDefault();
-		this.props.handlePageChange(this.state.page);
+		this.props.handlePageChange(this.props.currentPageNumber);
 	}
 
 	render() {
 		return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-			'div',
-			null,
+			'form',
+			{ onSubmit: this.handlePageNumberGo, className: 'row flex-nowrap' },
 			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-				'form',
-				{ onSubmit: this.handlePageNumberGo, className: 'row' },
+				'a',
+				{ href: '#', onClick: e => this.handlePageNumberMove(e, 'prev'), className: 'btn btn-primary d-flex align-items-center justify-content-center col m-1' },
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_icons_lib_fa_backward___default.a, null)
+			),
+			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+				'div',
+				{ className: 'col-5 row align-items-center' },
 				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 					'div',
-					{ className: 'col-5 row' },
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						'a',
-						{ href: '#', onClick: e => this.handlePageNumberMove(e, 'prev'), className: 'btn btn-primary' },
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_icons_lib_fa_backward___default.a, null)
-					),
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						'div',
-						{ className: 'col-5 row' },
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							'div',
-							{ className: 'col' },
-							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'number', value: this.state.page, onChange: this.handlePageNumberChange, className: 'form-control' })
-						),
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-							'div',
-							{ className: 'col' },
-							'of ',
-							this.props.maxPageNumber
-						)
-					),
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'submit', value: 'Go', className: 'btn btn-primary' }),
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-						'a',
-						{ href: '#', onClick: e => this.handlePageNumberMove(e, 'next'), className: 'btn btn-primary' },
-						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_icons_lib_fa_forward___default.a, null)
-					)
+					{ className: 'col' },
+					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'number', value: this.props.currentPageNumber, onChange: this.handlePageNumberChange, className: 'form-control' })
+				),
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+					'div',
+					{ className: 'col h6' },
+					'of ',
+					this.props.maxPageNumber
 				)
+			),
+			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'submit', value: 'Go', className: 'btn btn-primary col m-1' }),
+			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+				'a',
+				{ href: '#', onClick: e => this.handlePageNumberMove(e, 'next'), className: 'btn btn-primary d-flex align-items-center justify-content-center col m-1' },
+				__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_icons_lib_fa_forward___default.a, null)
 			)
 		);
 	}
@@ -58876,6 +58887,44 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+/* 105 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactIconBase = __webpack_require__(6);
+
+var _reactIconBase2 = _interopRequireDefault(_reactIconBase);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var FaStarO = function FaStarO(props) {
+    return _react2.default.createElement(
+        _reactIconBase2.default,
+        _extends({ viewBox: '0 0 40 40' }, props),
+        _react2.default.createElement(
+            'g',
+            null,
+            _react2.default.createElement('path', { d: 'm26.9 22.4l6.8-6.6-9.4-1.4-4.2-8.5-4.2 8.5-9.5 1.4 6.9 6.6-1.7 9.4 8.5-4.4 8.4 4.4z m11.7-8q0 0.5-0.5 1.1l-8.1 7.9 1.9 11.2q0 0.1 0 0.4 0 1.1-0.9 1.1-0.4 0-0.9-0.2l-10-5.3-10 5.3q-0.5 0.2-0.9 0.2-0.5 0-0.7-0.3t-0.3-0.8q0-0.1 0.1-0.4l1.9-11.2-8.1-7.9q-0.6-0.6-0.6-1.1 0-0.8 1.3-1l11.2-1.6 5-10.2q0.4-0.9 1.1-0.9t1.1 0.9l5 10.2 11.2 1.6q1.2 0.2 1.2 1z' })
+        )
+    );
+};
+
+exports.default = FaStarO;
+module.exports = exports['default'];
 
 /***/ })
 /******/ ]);
