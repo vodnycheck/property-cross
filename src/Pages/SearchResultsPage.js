@@ -17,7 +17,7 @@ class SearchResultsPage extends React.Component {
 	render(){
 		return (
 			<div className="container">
-				<h1 className="d-flex align-items-center">
+				<h1 className="d-flex align-items-center text-uppercase mb-5">
 					<BackButton className="float-left mt-2" />
 					<span className="col">Search results</span>
 					<div className="ml-auto">
@@ -37,8 +37,8 @@ class SearchResultsPage extends React.Component {
 							) : (
 									<button onClick={() => this.props.setLocalStorageItem(item, 'favsList')} className="btn btn-primary float-right"><Star /> Add to favs</button>
 							)}
-							<Link to="/property" onClick={() => this.props.handleSetNewPropertyListing(item)} className="row">
-								<img src={item.img_url} alt="property picture" className="img-fluid m-1"/>
+							<Link to="/property" onClick={() => this.props.handleSetNewPropertyListing(item)} className="row align-items-start">
+								<img src={item.thumb_url} alt="property picture" className="img-fluid m-1"/>
 								<div className="col col-6">
 									<h2>{item.title}</h2>
 									<div>Price: {item.price_currency + item.price}</div>

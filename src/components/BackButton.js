@@ -16,7 +16,7 @@ class BackButton extends React.Component {
 
 	render() {
 		return (
-				<button onClick={this.handleBack} className="btn">
+				<button onClick={this.handleBack} className="btn btn-primary">
 					<ChevronLeft /> Back
 				</button>
 		)

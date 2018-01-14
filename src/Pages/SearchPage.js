@@ -12,7 +12,7 @@ class SearchPage extends React.Component {
     render() {
         return (
             <div className="container">
-                <h1>Search page<Link to="/favs" className="btn btn-primary float-right mt-2"><Star /> Favorites</Link></h1>
+                <h1 className="text-uppercase mb-5">Search page<Link to="/favs" className="btn btn-primary float-right mt-2"><Star /> Favorites</Link></h1>
                 <p>Use the form below to search for houses to buy. You can search by place-name, postcode, or click “My location”, to search in your current location!</p>
                 {this.props.errorState > 0 ? (
                     <p>{this.props.errorMessage}</p>
