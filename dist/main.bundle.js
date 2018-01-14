@@ -20306,7 +20306,7 @@ exports = module.exports = __webpack_require__(27)(false);
 
 
 // module
-exports.push([module.i, ".btn svg {\r\n\tmargin-top: -4px;\r\n}\r\n\r\n.spinner {\r\n\tposition: absolute;\r\n\ttop: 5px;\r\n\tright: 5px;\r\n}\r\n\r\n.flex-grow-0 {\r\n\tflex-grow: 0;\r\n}\r\n\r\n.icon-spin {\r\n\t-webkit-animation: icon-spin 2s infinite linear;\r\n\tanimation: icon-spin 2s infinite linear;\r\n}\r\n\r\n@-webkit-keyframes icon-spin {\r\n\t0% {\r\n\t\t-webkit-transform: rotate(0deg);\r\n\t\ttransform: rotate(0deg);\r\n\t}\r\n\t100% {\r\n\t\t-webkit-transform: rotate(359deg);\r\n\t\ttransform: rotate(359deg);\r\n\t}\r\n}\r\n\r\n@keyframes icon-spin {\r\n\t0% {\r\n\t\t-webkit-transform: rotate(0deg);\r\n\t\ttransform: rotate(0deg);\r\n\t}\r\n\t100% {\r\n\t\t-webkit-transform: rotate(359deg);\r\n\t\ttransform: rotate(359deg);\r\n\t}\r\n}", ""]);
+exports.push([module.i, ".btn svg {\r\n\tmargin-top: -4px;\r\n}\r\n\r\n.spinner {\r\n\tposition: fixed;\r\n\ttop: 5px;\r\n\tright: 5px;\r\n}\r\n\r\n.flex-grow-0 {\r\n\tflex-grow: 0;\r\n}\r\n\r\n.icon-spin {\r\n\t-webkit-animation: icon-spin 2s infinite linear;\r\n\tanimation: icon-spin 2s infinite linear;\r\n}\r\n\r\n@-webkit-keyframes icon-spin {\r\n\t0% {\r\n\t\t-webkit-transform: rotate(0deg);\r\n\t\ttransform: rotate(0deg);\r\n\t}\r\n\t100% {\r\n\t\t-webkit-transform: rotate(359deg);\r\n\t\ttransform: rotate(359deg);\r\n\t}\r\n}\r\n\r\n@keyframes icon-spin {\r\n\t0% {\r\n\t\t-webkit-transform: rotate(0deg);\r\n\t\ttransform: rotate(0deg);\r\n\t}\r\n\t100% {\r\n\t\t-webkit-transform: rotate(359deg);\r\n\t\ttransform: rotate(359deg);\r\n\t}\r\n}", ""]);
 
 // exports
 
@@ -41667,7 +41667,7 @@ module.exports = exports['default'];
 
 function Spinner(props) {
 	if (props.show) {
-		return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_icons_lib_fa_circle_o_notch___default.a, { className: 'icon-spin float-right spinner' });
+		return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_icons_lib_fa_circle_o_notch___default.a, { className: 'icon-spin float-right spinner text-warning', size: 30 });
 	} else {
 		return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', null);
 	}
