@@ -3308,6 +3308,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
 class RootComponent extends __WEBPACK_IMPORTED_MODULE_2_react___default.a.Component {
 	constructor(props) {
@@ -3365,7 +3366,7 @@ class RootComponent extends __WEBPACK_IMPORTED_MODULE_2_react___default.a.Compon
 			parameters = '&place_name=' + this.state.inputText;
 		}
 
-		fetch('https://api.nestoria.co.uk/api' + originBody + '&page=' + this.state.currentPageNumber + parameters, {
+		fetch(proxyUrl + 'https://api.nestoria.co.uk/api' + originBody + '&page=' + this.state.currentPageNumber + parameters, {
 			method: 'GET',
 			cache: 'force-cache',
 			mode: 'cors'
