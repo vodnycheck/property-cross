@@ -9,6 +9,18 @@ import UnStar from 'react-icons/lib/fa/star-o';
 class SearchResultsPage extends React.Component {
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			currentInputPage : this.props.currentPageNumber
+		};
+
+		this.handleInputPageChange = this.handleInputPageChange.bind(this);
+	}
+
+	handleInputPageChange(number) {
+		this.setState ({
+			currentInputPage: parseInt(number,10)
+		})
 	}
 
 	componentDidMount(){
@@ -24,7 +36,9 @@ class SearchResultsPage extends React.Component {
 					<div className="ml-auto">
 						<PageNumber
 								currentPageNumber={this.props.currentPageNumber}
+								currentInputPage={this.state.currentInputPage}
 								handlePageChange={this.props.handlePageChange}
+								handleInputPageChange={this.handleInputPageChange}
 								maxPageNumber={this.props.maxPageNumber}
 						/>
 					</div>
@@ -52,7 +66,9 @@ class SearchResultsPage extends React.Component {
 					<div className="mx-auto">
 						<PageNumber
 								currentPageNumber={this.props.currentPageNumber}
+								currentInputPage={this.state.currentInputPage}
 								handlePageChange={this.props.handlePageChange}
+								handleInputPageChange={this.handleInputPageChange}
 								maxPageNumber={this.props.maxPageNumber}
 						/>
 					</div>

@@ -27,7 +27,7 @@ class RootComponent extends React.Component {
 			isRedirectNeeded: false,
 			placeToRedirect: '',
 			pendingState: false,
-			maxPageNumber: 5,
+			maxPageNumber: 0,
 			currentPageNumber: 1,
 			listing:{},
 			recentSearchList: [],
@@ -62,7 +62,7 @@ class RootComponent extends React.Component {
 			showSpinner: true
 		});
 
-		const originBody = '?country=uk&pretty=1&action=search_listings&encoding=json';
+		const originBody = '?country=uk&pretty=1&action=search_listings&encoding=json&number_of_results=50&sort=relevancy';
 		let parameters = '';
 		const isLocation = typeof settings !== 'undefined' && settings.location === true ? true : false;
 		if (isLocation) {
@@ -71,7 +71,7 @@ class RootComponent extends React.Component {
 			parameters = '&place_name=' + this.state.inputText;
 		}
 
-		fetch(proxyUrl + 'https://api.nestoria.co.uk/api?number_of_results=20' + originBody +
+		fetch(proxyUrl + 'https://api.nestoria.co.uk/api' + originBody +
 				'&page=' + this.state.currentPageNumber + parameters, {
 			method: 'GET',
 			cache: 'force-cache',
@@ -106,6 +106,9 @@ class RootComponent extends React.Component {
 
 	handleGoClick(e) {
 		typeof e !== "undefined" ? e.persist() : '';
+		this.setState({
+			currentPageNumber: 1
+		});
 		this.requestToServer();
 	}
 
