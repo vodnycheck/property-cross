@@ -10,14 +10,7 @@ function Favs(props){
 		<div className="container">
 			<h1 className="d-flex align-items-center text-uppercase mb-5">
 				<BackButton className="float-left mt-2" />
-				<span className="col">Favorits</span>
-				<div className="ml-auto">
-					{props.isInLocalStorage('favsList', props.listing) ? (
-							<button onClick={() => props.removeLocalStorageItem(props.listing, 'favsList')} className="btn btn-danger float-right"><UnStar /> Remove from favs</button>
-					) : (
-							<button onClick={() => props.setLocalStorageItem(props.listing, 'favsList')} className="btn btn-primary float-right"><Star /> Add to favs</button>
-					)}
-				</div>
+				<span className="col">Favorites</span>
 			</h1>
 			<ul className="list-group my-2">
 				{

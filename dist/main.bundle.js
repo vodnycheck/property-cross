@@ -17777,9 +17777,9 @@ jQuery.nodeName = nodeName;
 // https://github.com/jrburke/requirejs/wiki/Updating-existing-libraries#wiki-anon
 
 if ( true ) {
-	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
+	!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function() {
 		return jQuery;
-	}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+	}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 }
 
@@ -41837,22 +41837,7 @@ function Favs(props) {
 			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 				'span',
 				{ className: 'col' },
-				'Favorits'
-			),
-			__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-				'div',
-				{ className: 'ml-auto' },
-				props.isInLocalStorage('favsList', props.listing) ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-					'button',
-					{ onClick: () => props.removeLocalStorageItem(props.listing, 'favsList'), className: 'btn btn-danger float-right' },
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_react_icons_lib_fa_star_o___default.a, null),
-					' Remove from favs'
-				) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-					'button',
-					{ onClick: () => props.setLocalStorageItem(props.listing, 'favsList'), className: 'btn btn-primary float-right' },
-					__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_icons_lib_io_star___default.a, null),
-					' Add to favs'
-				)
+				'Favorites'
 			)
 		),
 		__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -58970,9 +58955,9 @@ function Favs(props) {
 
     // Define as an anonymous module so, through path mapping, it can be
     // referenced as the "underscore" module.
-    !(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
+    !(__WEBPACK_AMD_DEFINE_RESULT__ = (function() {
       return _;
-    }.call(exports, __webpack_require__, exports, module),
+    }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   }
   // Check for `exports` after `define` in case a build optimizer adds it.
